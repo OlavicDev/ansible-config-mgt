@@ -1,0 +1,32 @@
+---
+- name: Delete Wireshark on web, NFS, and DB servers
+  hosts: webservers, nfs, db
+  become: true
+  tasks:
+    - name: Remove Wireshark (for yum-based systems)
+      yum:
+        name: wireshark
+        state: absent
+      when: ansible_facts['pkg_mgr'] == "yum"
+    
+    - name: Remove Wireshark (for apt-based systems)
+      apt:
+        name: wireshark-qt
+        state: absent
+        autoremove: yes
+        purge: yes
+        autoclean: yes
+      when: ansible_facts['pkg_mgr'] == "apt"
+
+- name: Delete Wireshark on LB servers
+  hosts: lb
+  become: true
+  tasks:
+    - name: Remove Wireshark (for apt-based systems)
+      apt:
+        name: wireshark-qt
+        state: absent
+        autoremove: yes
+        purge: yes
+        autoclean: yes
+      when: ansible_facts['pkg_mgr'] == "apt" 
