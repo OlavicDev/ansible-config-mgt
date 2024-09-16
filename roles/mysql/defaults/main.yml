@@ -1,0 +1,20 @@
+mysql_root_username: ""
+mysql_root_password: ""
+mysql_root_password_update: true
+
+mysql_users:
+  - name: webaccess
+    host: 172.31.90.157
+    password: Admin123$
+    priv: "*.*:ALL"
+    state: present
+
+mysql_databases:
+  - name: tooling_db
+    collation: utf8_general_ci
+    encoding: utf8
+    state: present
+
+mysql_bind_address: '0.0.0.0'
+mysql_port: "3306"
+

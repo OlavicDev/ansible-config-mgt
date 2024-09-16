@@ -1,6 +1,27 @@
 ---
-- hosts: all
-- import_playbook: ../static-assignments/common.yml
+# Static assignments for common tasks
+- import_playbook: ../staticassignments/common.yml
 
+# Include environment-specific variables dynamically
+- name: Include dynamic variables
+  hosts: all
+  tasks:
+    include: ../dynamic-assignments/env-vars.yml
+  tags:
+    - always
+
+# Webserver assignment (still using uat-webservers group)
 - hosts: uat-webservers
+  become: true
+  tasks:
+    - include_role:
+        name: webserver
+
+# Load balancer assignment (decide between Nginx and Apache dynamically)
+- name: Loadbalancer assignment
+  hosts: lb
+  become: true
+  tasks:
+    import_playbook: ../staticassignments/loadbalancers.yml
+    when: load_balancer_is_required
 

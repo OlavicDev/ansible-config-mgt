@@ -1,31 +1,27 @@
 ---
 # tasks file for webserver
 
----
-- name: Setup Apache and deploy a website
-  hosts: all
-  become: true
-  tasks:
-    - name: Install Apache
-      ansible.builtin.yum:
-        name: "httpd"
-        state: present
+- name: Install Apache
+  ansible.builtin.yum:
+    name: "httpd"
+    state: present
 
-    - name: Install Git
-      ansible.builtin.yum:
-        name: "git"
-        state: present
+- name: Install Git
+  ansible.builtin.yum:
+    name: "git"
+    state: present
 
-    - name: Clone a repository
-      ansible.builtin.git:
-        repo: https://github.com/OlavicDev/tooling.git
-        dest: /var/www/html
-        force: yes
+- name: Clone a repository
+  ansible.builtin.git:
+    repo: https://github.com/OlavicDev/tooling.git
+    dest: /var/www/html
+    force: yes
 
-    - name: Copy HTML content to one level up
-      command: cp -r /var/www/html/html/ /var/www/
+- name: Copy HTML content to one level up
+  command: cp -r /var/www/html/html/ /var/www/
 
-    - name: Start Apache service
-      ansible.builtin.service:
-        name: httpd
-        state: started
+- name: Start Apache service
+  ansible.builtin.service:
+    name: httpd
+    state: started
+
